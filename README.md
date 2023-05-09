@@ -150,7 +150,9 @@ There are currently five agents available in `src/agents/.`:
 
 If you wish to create your own agent, you can use `TemplateAgent` as a layout.
 
-The agent `src/agents/RiskyValley.py` (not to be confused with the map `RiskyValley.yaml`!) is an example of an agent with a correct-size action and observation spaces. Hint: There can be many different representations for the same action and observation space, and a good representation may substantially increase the training quality.
+The agent `src/agents/RiskyValley.py` (not to be confused with the map `RiskyValley.yaml`!) is an example of an agent with a correct-size action and observation spaces. 
+
+Hint: There can be many different representations for the same action and observation space, and a good representation may substantially increase the training quality.
 
 ### HumanAgent
 
