@@ -67,7 +67,7 @@ data = {
 scores = []
 
 
-for index, (map, agent) in enumerate([("RiskyValley", "SimpleAgent"),("RiskyValleyNoDesert", "SimpleAgent"),("RiskyWaters", "SimpleAgent")]):    
+for index, (map, agent) in enumerate([("RiskyValley", "SimpleAgent")]):    
     print(f"Running map: {map}")
     agents = [None, agent]
     args.map = map
