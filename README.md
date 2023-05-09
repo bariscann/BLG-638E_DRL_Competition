@@ -103,7 +103,7 @@ The game involves four units:
 - Truck
 - Drone
 
-Unit rules can be changed in `data/config/rules.yaml` in case it is beneficial for your training. Currently given rules will be used in the competition. Do not touch if you are not sure what you are doing.
+Unit rules can be changed in `data/config/rules.yaml` in case it is beneficial for your training. Currently given rules will be used in the competition. Dangerous to touch if you are not sure what you are doing.
 
 <p align="center">
   <img src="documentation/images/unit details.png" width="50%" height="50%">
