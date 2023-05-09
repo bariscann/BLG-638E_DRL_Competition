@@ -34,23 +34,39 @@ NOTE: You do not have to give all of the agents every time if you define them be
 State representation is the knowledge from the game that is being send to agents when it is their turn.
 
 State includes following members:
+
 `score = int, shape(2)`
+
 `turn = int, shape(1)`
+
 `max_turn = int, shape(1)`
+
 `units = int, shape(y,x)`
+
 `hps = int, shape(y,x)`
+
 `bases = int, shape(y,x)`
+
 `res = int, shape(y,x)`
+
 `load = int, shape(y,x)`
 
 Example state decoding: 
+
 `score = state['score']`
+
 `turn = state['turn']`
+
 `max_turn = state['max_turn']`
+
 `units = state['units']`
+
 `hps = state['hps']`
+
 `bases = state['bases']`
+
 `res = state['resources']`
+
 `load = state['loads']`
 
 ### Action
