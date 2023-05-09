@@ -108,7 +108,9 @@ Unit rules can be changed in `data/config/rules.yaml` in case it is beneficial f
 <p align="center">
   <img src="documentation/images/unit details.png">
 </p>
-:-------------------------:|:-------------------------:|:-------------------------:
+
+
+
 <p align="center">
   <img src="documentation/images/unit abilities.png">
 </p>
@@ -131,7 +133,9 @@ Along with some toy maps (1 or 2 units, tiny dimensions).
 <p align="center">
   <img src="documentation/images/terrain names.png">
 </p>
-:-------------------------:|:-------------------------:|:-------------------------:
+
+
+
 
 
 Toy Env 1           |  Toy Env 2  |  Toy Env 3  
