@@ -75,7 +75,9 @@ Example state decoding:
 
 Location (y,x) Tuple
 
-Movement: 0-6 where 1 to 6 are movement actions with the direction given in the image, and 0 is the shoot or collect actions![Movement](documentation/images/action.jpg)
+Movement: 0-6 where 1 to 6 are movement actions with the direction given in the image, and 0 is the shoot or collect actions
+
+![Movement](documentation/images/action.jpg)
 
 Target: (y,x) Tuple
 
