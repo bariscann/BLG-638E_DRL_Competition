@@ -119,6 +119,7 @@ There are currently some maps available:
 Along with some toy maps (1 or 2 units, tiny dimensions).
 
 
+Toy Env 1           |  Toy Env 2  |  Toy Env 3  
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Toy1](documentation/images/Toy3.png)  |  ![Toy2](documentation/images/Toy2.png) |  ![Toy3](documentation/images/Toy1.png)
 
