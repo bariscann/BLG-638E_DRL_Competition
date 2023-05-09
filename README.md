@@ -3,8 +3,8 @@ A strategy simulation game for competing Deep Reinforcement Learning (DRL) agent
 
 The objective of the game is to have more resources than your opponent when the time ends. The score is calculated as `(your resources) - (opponent's resources)` at the end of the game. As it can be clearly seen; getting positive scores means you have won, negative scores mean you have lost, and lastly getting a 0 score means the game was a tie.
 
-![RiskyValley]<p align="center">
-  <img src=(documentation/images/RiskyValley.png)
+<p align="center">
+  <img width="460" height="300" src="documentation/images/RiskyValley.png">
 </p>
 
 ## How to Install
