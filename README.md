@@ -109,7 +109,7 @@ Unit rules can be changed in `data/config/rules.yaml` in case it is beneficial f
   <img src="documentation/images/unit details.png">
 </p>
 
-
+&nbsp; 
 
 <p align="center">
   <img src="documentation/images/unit abilities.png">
@@ -134,7 +134,7 @@ Along with some toy maps (1 or 2 units, tiny dimensions).
   <img src="documentation/images/terrain names.png">
 </p>
 
-
+&nbsp; 
 
 
 
