@@ -8,9 +8,9 @@ The objective of the game is to have more resources than your opponent when the 
 
 Make sure that Python packages in `requirements.txt` are installed. Also please make sure to install the following versions of given libraries:
 
-`Python==3.9.5`
-`pytorch==1.11 with cudatoolkit=10.2`
-`tensorflow==2.8.0`
+- `Python==3.9.5`
+- `pytorch==1.11 with cudatoolkit=10.2`
+- `tensorflow==2.8.0`
 
 The game is developed for Linux Operating System (OS) and might not work on other OS (definitely does not work on Windows, untested on Mac). If the game does not work on your machine's OS, you need to deploy a virtual machine. You can deploy the Docker Container with the help of the `Dockerfile` given in the repository.
 
