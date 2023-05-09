@@ -114,6 +114,8 @@ There are currently some maps available:
 
 Along with some toy maps (1 or 2 units, tiny dimensions).
 
+![Toy1](documentation/images/Toy3.png) ![Toy2](documentation/images/Toy2.png) ![Toy3](documentation/images/Toy1.png)
+
 The competition map is going to be in dimensions (y=18, x=24). Your agent's action and observation (state) spaces should work in these dimensions. The maps RiskyValley (`data/config/RiskyValley.yaml`) and RiskyWaters (`data/config/RiskyWaters.yaml`) are examples of a correct-size competition environment.
 
 If you wish to create your own map, please take `demo.yaml` as a layout.
