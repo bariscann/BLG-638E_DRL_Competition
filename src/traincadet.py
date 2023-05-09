@@ -2,7 +2,6 @@ import argparse
 import ray
 import os
 from ray.tune import run_experiments, register_env
-from agents.GolKenari import GolKenari
 from agents.RiskyValley import RiskyValley
 
 os.environ['CUDA_VISIBLE_DEVICES'] = "1"
