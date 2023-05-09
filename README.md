@@ -131,7 +131,7 @@ Along with some toy maps (1 or 2 units, tiny dimensions).
 
 
 <p align="center">
-  <img src="documentation/images/terrain names.png" width="50%" height="50%">
+  <img src="documentation/images/terrain names.png" width="75%" height="75%">
 </p>
 
 &nbsp; 
