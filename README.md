@@ -6,7 +6,7 @@ The objective of the game is to have more resources than your opponent when the 
 ## How to Install
 `git clone https://github.com/KubilayKaganKomurcu/DRL-Competition.git`
 
-Make sure that Python packages in `requirements.txt` are installed. Also please make sure to install the following versions of given libraries:
+Make sure that Python packages in `requirements.txt` are installed. Also please make sure to install the following versions of the given libraries:
 
 - `Python==3.9.5`
 - `pytorch==1.11 with cudatoolkit=10.2`
