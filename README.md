@@ -55,13 +55,15 @@ Example state decoding:
 
 ### Action
 
-`[location, movement, target]`
+`[location, movement, target, train]`
 
 Location (y,x) Tuple
 
 Movement: 0-6 where 1 to 6 are movement actions with the direction given in the image, and 0 is the shoot or collect actions![Movement](documentation/images/action.jpg)
 
 Target: (y,x) Tuple
+
+Train: 0-4 where 0 is no action, 1 is train truck, 2 is train light tank, 3 is train heavy tank, and 4 is train drone.
 
 Order of processing the action is done by the order returned from the agent.
 
