@@ -118,6 +118,10 @@ There are currently some maps available:
 
 Along with some toy maps (1 or 2 units, tiny dimensions).
 
+Solarized dark             |  Solarized Ocean |  Solarized Ocean 
+:-------------------------:|:-------------------------:|:-------------------------:
+![Toy1](documentation/images/Toy3.png)  |  ![Toy2](documentation/images/Toy2.png) |  ![Toy3](documentation/images/Toy1.png)
+
 <p align="left">
   <img  src="documentation/images/Toy3.png" width="25%" height="25%">
 </p><p align="center">
