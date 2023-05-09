@@ -105,6 +105,15 @@ The game involves four units:
 
 Unit rules can be changed in `data/config/rules.yaml` in case it is beneficial for your training. Currently given rules will be used in the competition. Do not touch if you are not sure what you are doing.
 
+<p align="center">
+  <img src="documentation/images/unit details.png">
+</p>
+
+<p align="center">
+  <img src="documentation/images/unit abilities.png">
+</p>
+
+
 ## Maps
 
 Maps are defined as Yaml files in `data/config`.
@@ -117,6 +126,12 @@ There are currently some maps available:
 - GolKenariVadisi
 
 Along with some toy maps (1 or 2 units, tiny dimensions).
+
+
+<p align="center">
+  <img src="documentation/images/terrain names.png">
+</p>
+
 
 
 Toy Env 1           |  Toy Env 2  |  Toy Env 3  
