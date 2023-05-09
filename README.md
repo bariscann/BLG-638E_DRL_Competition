@@ -170,9 +170,14 @@ Self-Play is using your own agent to compete with itself to possibly learn your 
 
 ## Competition and Submission
 
-
 The competition is planned to have two stages. In the first stage, each agent is going to face a bot and gather a score to be placed on a leaderboard. These scores on the leaderboard will be manually updated in random intervals after submissions. You won't know which bot or map you will be competing in, other than the dimensions of the map which is (18, 24) where 18 and 24 are the number of hexagonal tiles for vertical and horizontal respectively. The scores will show cumulative points for 30 games on each map.
 
 For the second stage, after the deadline for submissions is reached, at most the best 4 teams will compete against each other, meaning their agents will play against each other in an online event in a tournament fashion.
 
 For the submission, you are asked to submit ALL of the repository, but please also add the most important files in the folder `submission/.`. These files are your training script (example: `src/traincadet.py`), your agent (example: `src/agents/RiskyValley.py`), your model file, and possibly your utilities file (example: `src/agents/utilities.py`).
+
+## Contact
+
+Please open an issue in this GitHub Repository for any questions, problems, or help regarding the competition environment, after you made sure no one opened an issue with the same problem.
+
+For any kind of problem not directly related to the environment such as the competition deadline or the grading, please contact Prof. N. Kemal Üre.
