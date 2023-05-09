@@ -23,6 +23,7 @@ The game is developed for Linux Operating System (OS) and might not work on othe
 Example run: `python src/agentsofglory.py ResourceRiver SimpleAgent RandomAgent`
 
 You can use examples given for a StableBaselines3 agent with `src/sb3cadet.py` or a Ray-Rllib agent with `src/traincadet.py` for your training. 
+
 NOTE: You do not have to give all of the agents every time if you define them beforehand in `src/sb3cadet.py` or `src/traincadet.py`. Please read the parsed arguments in these files carefully and change them accordingly.
 
 
@@ -108,11 +109,11 @@ Each Agent should be a Gym Environment, and thus have the following functions:
 - `render(self,)`
 
 There are currently five agents available in `src/agents/.`:
--HumanAgent
--RandomAgent
--SimpleAgent
--GolKenari
--RiskyValley
+- HumanAgent
+- RandomAgent
+- SimpleAgent
+- GolKenari
+- RiskyValley
 
 
 
@@ -147,7 +148,7 @@ Self-Play is using your own agent to compete with itself to possibly learn your 
 ## Competition and Submission
 
 
-The competition is planned to have two stages. In the first stage, each agent is going to face a bot and gather a score to be placed on a leaderboard. These scores on the leaderboard will be manually updated in random intervals after submissions. You won't know which bot or map you will be competing in, other than the dimensions of the map which is (18,24) where 18 and 24 are the number of hexagonal tiles for vertical and horizontal respectively. The scores will show cumulative points for 30 games on each map.
+The competition is planned to have two stages. In the first stage, each agent is going to face a bot and gather a score to be placed on a leaderboard. These scores on the leaderboard will be manually updated in random intervals after submissions. You won't know which bot or map you will be competing in, other than the dimensions of the map which is (18, 24) where 18 and 24 are the number of hexagonal tiles for vertical and horizontal respectively. The scores will show cumulative points for 30 games on each map.
 
 For the second stage, after the deadline for submissions is reached, at most the best 4 teams will compete against each other, meaning their agents will play against each other in an online event in a tournament fashion.
 
