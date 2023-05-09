@@ -121,10 +121,10 @@ Along with some toy maps (1 or 2 units, tiny dimensions).
 <p align="left">
   <img  src="documentation/images/Toy3.png">
 </p>
-![Toy2](documentation/images/Toy3.png)<p align="center">
+<p align="center">
   <img  src="documentation/images/Toy2.png">
 </p>
-![Toy3](documentation/images/Toy3.png)<p align="right">
+<p align="right">
   <img  src="documentation/images/Toy1.png">
 </p>
 
