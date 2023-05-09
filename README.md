@@ -120,11 +120,9 @@ Along with some toy maps (1 or 2 units, tiny dimensions).
 
 <p align="left">
   <img  src="documentation/images/Toy3.png" width="25%" height="25%">
-</p>
-<p align="center">
+</p><p align="center">
   <img  src="documentation/images/Toy2.png" width="25%" height="25%">
-</p>
-<p align="right">
+</p><p align="right">
   <img  src="documentation/images/Toy1.png" width="25%" height="25%">
 </p>
 
