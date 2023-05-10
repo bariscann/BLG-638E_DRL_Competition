@@ -1,7 +1,14 @@
 # DRL-Competition 2023
 A strategy simulation game for competing Deep Reinforcement Learning (DRL) agents. It has complex dynamics such that the state-of-the-art methods can be compared meaningfully while computationally being simple that it doesn't take a lifetime to complete a DRL training.
 
+
+        |   
+:-------------------------:|:-------------------------:
+![Attack](documentation/images/attack.gif)  |  ![Collect](documentation/images/collect.gif) 
+
 The objective of the game is to have more resources than your opponent when the time ends. The score is calculated as `(your resources) - (opponent's resources)` at the end of the game. As it can be clearly seen; getting positive scores means you have won, negative scores mean you have lost, and lastly getting a 0 score means the game was a tie.
+
+
 
 <p align="center">
   <img src="documentation/images/RiskyValley.png">
