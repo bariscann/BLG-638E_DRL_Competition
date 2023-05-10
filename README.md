@@ -1,5 +1,5 @@
 # DRL-Competition 2023
-A strategy simulation game for competing Deep Reinforcement Learning (DRL) agents. It has complex dynamics such that the state-of-the-art methods can be compared meaningfully while computationally being simple that it doesn't take a lifetime to complete a DRL training.
+A turn based strategy simulation game for competing Deep Reinforcement Learning (DRL) agents. It has complex dynamics such that the state-of-the-art methods can be compared meaningfully while computationally being simple that it doesn't take a lifetime to complete a DRL training.
 
 &nbsp;
 
