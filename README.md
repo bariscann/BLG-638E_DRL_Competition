@@ -1,19 +1,19 @@
 # DRL-Competition 2023
 A strategy simulation game for competing Deep Reinforcement Learning (DRL) agents. It has complex dynamics such that the state-of-the-art methods can be compared meaningfully while computationally being simple that it doesn't take a lifetime to complete a DRL training.
 
-
+&nbsp;
 
 Attack           |  Collect  |
 :-------------------------:|:-------------------------:
 <img src="documentation/images/attack.gif" width="50%" height="50%">  | <img src="documentation/images/collect.gif" width="50%" height="50%">
 
+&nbsp;
+
 The objective of the game is to have more resources than your opponent when the time ends. The score is calculated as `(your resources) - (opponent's resources)` at the end of the game. As it can be clearly seen; getting positive scores means you have won, negative scores mean you have lost, and lastly getting a 0 score means the game was a tie.
 
 
 
-<p align="center">
-  <img src="documentation/images/RiskyValley.png">
-</p>
+
 
 ## How to Install
 `git clone https://github.com/KubilayKaganKomurcu/DRL-Competition.git`
@@ -154,6 +154,11 @@ Toy Env 1           |  Toy Env 2  |  Toy Env 3
 The competition map is going to be in dimensions (y=18, x=24). Your agent's action and observation (state) spaces should work in these dimensions. The maps RiskyValley (`data/config/RiskyValley.yaml`) and RiskyWaters (`data/config/RiskyWaters.yaml`) are examples of a correct-size competition environment.
 
 If you wish to create your own map, please take `demo.yaml` as a layout.
+
+&nbsp;
+<p align="center">
+  <img src="documentation/images/RiskyValley.png">
+</p>
 
 ## Agents
 
