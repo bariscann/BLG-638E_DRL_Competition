@@ -3,7 +3,7 @@ A strategy simulation game for competing Deep Reinforcement Learning (DRL) agent
 
 
 
-Toy Env 1           |  Toy Env 2  |
+Attack           |  Collect  |
 :-------------------------:|:-------------------------:
 <img src="documentation/images/attack.gif" width="50%" height="50%">  | <img src="documentation/images/collect.gif" width="50%" height="50%">
 
