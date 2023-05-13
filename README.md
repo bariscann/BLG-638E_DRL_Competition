@@ -200,11 +200,11 @@ SimpleAgent only uses `Truck` and `LightTank` units. Other units constantly try 
 
 ### GolKenari
 
-GolKenari is a smart agent for dimensions (15, 7). Can be found in `src/agents/golkenari.py`. Check the code for further details.
+GolKenari is a smart agent for map dimensions (15, 7). Can be found in `src/agents/golkenari.py`. Check the code for further details.
 
 ### RiskyValley
 
-RiskyValley is a smart agent for dimensions (18, 24). Can be found in `src/agents/RiskyValley.py`. Check the code for further details.
+RiskyValley is a smart agent for map dimensions (18, 24). Can be found in `src/agents/RiskyValley.py`. Check the code for further details.
 
 ## Self-Play
 
