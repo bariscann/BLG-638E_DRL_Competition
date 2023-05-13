@@ -16,7 +16,7 @@ The objective of the game is to have more resources than your opponent when the 
 
 
 ## How to Install
-`git clone https://github.com/KubilayKaganKomurcu/DRL-Competition.git`
+`git clone https://github.com/DRL-ITU-2023/DRL-Competition`
 
 Make sure that Python packages in `requirements.txt` are installed. Also please make sure to install the following versions of the given libraries:
 
