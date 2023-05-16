@@ -36,7 +36,7 @@ Example run: `python src/agentsofglory.py ResourceRiver SimpleAgent RandomAgent`
 
 You can use examples given for a StableBaselines3 agent with `src/sb3cadet.py` or a Ray-Rllib agent with `src/traincadet.py` for your training. 
 
-NOTE: You do not have to give all of the agents every time if you define them beforehand in `src/sb3cadet.py` or `src/traincadet.py`. Please read the parsed arguments in these files carefully and change them accordingly.
+NOTE: You do not have to give both of the agents every time if you define them beforehand in `src/sb3cadet.py` or `src/traincadet.py`. Please read the parsed arguments in these files carefully and change them accordingly.
 
 
 ## Gym
