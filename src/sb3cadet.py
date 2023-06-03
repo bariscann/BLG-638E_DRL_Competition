@@ -3,6 +3,7 @@ from stable_baselines3 import A2C
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common import logger
 from stable_baselines3.common.callbacks import BaseCallback, CheckpointCallback
+from agents.RiskyValley import RiskyValley
 import argparse
 
 
@@ -74,8 +75,8 @@ if __name__ == "__main__":
             [("hypers", hyperparam)]
         )
 
-        env = SubprocVecEnv([lambda: MultiRayEnv(args, agents) for i in range(hyperparam["env"]["n_envs"])])
-        checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./models/singletruckst',
+        env = SubprocVecEnv([lambda: RiskyValley(args, agents) for i in range(hyperparam["env"]["n_envs"])])
+        checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./models/YOUR-MODEL-NAME',
                                                  name_prefix='tsts')
 
         model = A2C(env=env,
