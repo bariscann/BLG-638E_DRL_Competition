@@ -76,7 +76,7 @@ if __name__ == "__main__":
         )
 
         env = SubprocVecEnv([lambda: RiskyValley(args, agents) for i in range(hyperparam["env"]["n_envs"])])
-        checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./models/YOUR-MODEL-NAME',
+        checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./models/RiskyValley_Default',
                                                  name_prefix='tsts')
 
         model = A2C(env=env,

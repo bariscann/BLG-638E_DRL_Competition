@@ -8,10 +8,7 @@ from game import Game
 from utilities import multi_forced_anchor, necessary_obs, decode_location, multi_reward_shape, enemy_locs, ally_locs, getDistance
 
 
-
-
 class RiskyValley(BaseLearningAgentGym):
-
     tagToString = {
             1: "Truck",
             2: "LightTank",
@@ -30,17 +27,17 @@ class RiskyValley(BaseLearningAgentGym):
         self.episodes = 0
         self.steps = 0
         self.nec_obs = None
+        # TODO: Değiştirmemiz gereken bir şey, trainingi çok etkiliyor
         self.observation_space = spaces.Box(
             low=-2,
             high=401,
             shape=(24*18*10+4,),
             dtype=np.int16
         )
+        # TODO: Değiştirmemiz gereken bir şey, trainingi çok etkiliyor
         self.action_space = spaces.MultiDiscrete([7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5])
         self.previous_enemy_count = 4
         self.previous_ally_count = 4
-
-
 
     def setup(self, obs_spec, action_spec):
         self.observation_space = obs_spec
@@ -56,7 +53,6 @@ class RiskyValley(BaseLearningAgentGym):
         self.nec_obs = state
         return self.decode_state(state)
         
-
     @staticmethod
     def _decode_state(obs, team, enemy_team):
         turn = obs['turn'] # 1
@@ -110,7 +106,6 @@ class RiskyValley(BaseLearningAgentGym):
         
         state = (*score.tolist(), turn, max_turn, *unitss, *hpss, *basess, *ress, *loads, *terr)
 
-
         return np.array(state, dtype=np.int16), (x_max, y_max, my_units, enemy_units, resources, my_base,enemy_base)
 
     @staticmethod
@@ -122,7 +117,6 @@ class RiskyValley(BaseLearningAgentGym):
         state, info = self._decode_state(obs, self.team, self.enemy_team)
         self.x_max, self.y_max, self.my_units, self.enemy_units, self.resources, self.my_base, self.enemy_base = info
         return state
-
     
     def take_action(self, action):
         return self.just_take_action(action, self.nec_obs, self.team) 
@@ -206,9 +200,6 @@ class RiskyValley(BaseLearningAgentGym):
 
         locations = list(map(tuple, locations))
         return [locations, movement, enemy_order, train]
-
-
-
 
     def step(self, action):
         harvest_reward = 0
