@@ -30,13 +30,15 @@ The game is developed for Linux Operating System (OS) and might not work on othe
 
 ### Single to Run
 
-`python src/agentsofglory.py "map" "agent_blue" "agent_red"`
+`python src/sb3cadet.py "map" "agent_blue" "agent_red"`
 
-Example run: `python src/agentsofglory.py ResourceRiver SimpleAgent RandomAgent`
+Example run: `python src/sb3cadet.py RiskyValley --agentBlue RiskyValley --agentRed RandomAgent`
 
 You can use examples given for a StableBaselines3 agent with `src/sb3cadet.py` or a Ray-Rllib agent with `src/traincadet.py` for your training. 
 
 NOTE: You do not have to give both of the agents every time if you define them beforehand in `src/sb3cadet.py` or `src/traincadet.py`. Please read the parsed arguments in these files carefully and change them accordingly.
+
+EDIT: `src/agentsofglory.py` is for non-gym agents (bots), and you should stick to the other two training scripts. Also, there is currently an error with it, so it is not recommended to use it at all until the problem is fixed.
 
 
 ## Gym
