@@ -30,7 +30,7 @@ The game is developed for Linux Operating System (OS) and might not work on othe
 
 ### Single to Run
 
-`python src/sb3cadet.py "map" "agent_blue" "agent_red"`
+`python src/sb3cadet.py "map" "agentBlue" "agentRed"`
 
 Example run: `python src/sb3cadet.py RiskyValley --agentBlue RiskyValley --agentRed RandomAgent`
 
