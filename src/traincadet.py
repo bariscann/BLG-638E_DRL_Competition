@@ -14,7 +14,7 @@ parser.add_argument('--mode', metavar='mode', type=str, default="Sim",
                     help='Select Mode[Train,Sim]')
 parser.add_argument('--agentBlue', metavar='agentBlue', type=str,
                     help='Class name of Blue Agent')
-parser.add_argument('agentRed', metavar='agentRed', type=str,
+parser.add_argument('--agentRed', metavar='agentRed', type=str,
                     help='Class name of Red Agent')
 parser.add_argument('--numOfMatch', metavar='numOfMatch', type=int, nargs='?', default=1,
                     help='Number of matches to play between agents')
