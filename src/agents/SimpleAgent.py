@@ -152,7 +152,7 @@ class SimpleAgent:
                 else:
                     movement.append(copy.copy(possible_actions[0][-1]))
                 target.append(copy.copy(target_pos))
-            else:
+            else: # Always move up, but why?
                 movement.append(2)
                 target.append([0,0])  
         
@@ -175,7 +175,8 @@ class SimpleAgent:
                 train = stringToTag["Drone"]
             elif len(self.my_units)<len(self.enemy_units):
                 train = randint(2,4) # Create new attack units
-        
+               
+        # If loosing and less units than enemy
         elif state["score"][self.team]+2<state["score"][self.enemy_team] and len(self.my_units)<len(self.enemy_units)*2:
             train = randint(2,4) # Create new attack units
         
