@@ -20,20 +20,26 @@ class SimpleAgent:
         return
         '''
         self.y_max, self.x_max = state['resources'].shape
+
         decoded = decodeState(state)
+
         self.my_units = decoded[self.team]
         self.enemy_units = decoded[self.enemy_team]
         self.my_base = decoded[self.team + 2]
         self.enemy_base = decoded[self.enemy_team + 2]
         self.resources = decoded[4]
+
         movement = []
         target = []
         location = []
-        counter = {"Truck":0,"LightTank":0,"HeavyTank":0,"Drone":0}
+        counter = {"Truck":0,"LightTank":0,"HeavyTank":0,"Drone":0} # Count for units
+        
         for unit in self.my_units:
             counter[unit['tag']]+=1
             location.append(unit['location'])
             unt_pos = [unit['location'][0], unit['location'][1]]
+
+            # LIGHT TANK, HEAVY_TANK, DRONE AGENTS
             if unit['tag'] == 'LightTank' or unit['tag'] == 'Drone' or unit['tag'] == 'HeavyTank':
                 target_type = 9
                 target_pos = None
@@ -81,6 +87,8 @@ class SimpleAgent:
                     else:
                         movement.append(copy.copy(possible_actions[0][-1]))
                     target.append(copy.copy(target_pos))
+
+            # TRUCK AGENT        
             elif unit['tag'] == 'Truck':
                 dis = 999
                 target_pos = None
@@ -121,20 +129,27 @@ class SimpleAgent:
             else:
                 movement.append(2)
                 target.append([0,0])  
-        train = 0
+        
+        # NEW UNIT CREATION
+        train = 0 # Don't create any new unit on the map
+        
         #if random() < 0.2:
         #    train = randint(1,4)
+
+        # Create new units based on condition
         if state["score"][self.team]>state["score"][self.enemy_team]+2:
-            if counter["Truck"]<2:
+            if counter["Truck"]<2: # Create new truck unit
                 train = stringToTag["Truck"]
-            elif counter["LightTank"]<1:
+            elif counter["LightTank"]<1: # Create new light tank unit
                 train = stringToTag["LightTank"]
-            elif counter["HeavyTank"]<1:
+            elif counter["HeavyTank"]<1: # Create new heavy unit
                 train = stringToTag["HeavyTank"]
-            elif counter["Drone"]<1:
+            elif counter["Drone"]<1: # Create new drone unit
                 train = stringToTag["Drone"]
             elif len(self.my_units)<len(self.enemy_units):
-                train = randint(2,4)
+                train = randint(2,4) # Create new attack units
+        
         elif state["score"][self.team]+2<state["score"][self.enemy_team] and len(self.my_units)<len(self.enemy_units)*2:
-            train = randint(2,4)
+            train = randint(2,4) # Create new attack units
+        
         return (location, movement, target, train)

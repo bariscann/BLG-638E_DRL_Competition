@@ -27,9 +27,11 @@ def getMovement(unit_position, action):
 
 
 def decodeState(state):
-    # score = state['score']
-    # turn = state['turn']
-    # max_turn = state['max_turn']
+    # WAS COMMENTED
+    score = state['score']
+    turn = state['turn']
+    max_turn = state['max_turn']
+    # WAS COMMENTED
     units = state['units']
     hps = state['hps']
     bases = state['bases']
