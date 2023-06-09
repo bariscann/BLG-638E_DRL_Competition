@@ -9,7 +9,7 @@ from .utilities import *
 class RandomAgent:
     def __init__(self,team,action_lenght):
         self.team = team
-        self.enemy_team = (team+1)%2
+        self.enemy_team = (team+1) % 2
         self.action_lenght = action_lenght
 
     def decode_state(self, state):
@@ -57,6 +57,16 @@ class RandomAgent:
                     self.enemy_base = (i,j)
 
     def action(self, state):
+        """
+            Returns:    
+                An action tuple structure consisting of location, movement, target, train
+                    Tuple[
+                        location: List[Tuple[(x,y)]] = Locations of the units on the map
+                        movement: List[int] = Desired movement for the units
+                        target: List[Tuple[(x,y)]] = Targets of the units of the map, next state
+                        train: int = Train additional units on the map.
+                    ]
+        """
         self.decode_state(state)
 
         movement = []
@@ -67,7 +77,7 @@ class RandomAgent:
         # Units are randomly moving on the maps
         for unit in self.my_units:
             location.append(unit['location'])
-            movement.append(randint(0,6))
+            movement.append(randint(0,6)) # Units can move or shoot
             unit_target = randint(0,len(self.enemy_units)-1)
             target.append(self.enemy_units[unit_target]['location'])
 

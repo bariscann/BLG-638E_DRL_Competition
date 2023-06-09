@@ -14,10 +14,19 @@ class SimpleAgent:
 
     def action(self, state):
         '''
-        pos=[3, 17]
-        target=[10, 15]
-        astar(pos,target,state)
-        return
+        Given comments:
+            pos=[3, 17]
+            target=[10, 15]
+            astar(pos,target,state)
+            return
+        Returns:    
+            An action tuple structure consisting of location, movement, target, train
+                Tuple[
+                    location: List[Tuple[(x,y)]] = Locations of the units on the map
+                    movement: List[int] = Desired movement for the units
+                    target: List[Tuple[(x,y)]] = Targets of the units of the map, next state
+                    train: int = Train additional units on the map.
+                ]
         '''
         self.y_max, self.x_max = state['resources'].shape
 
@@ -44,7 +53,7 @@ class SimpleAgent:
                 target_type = 9
                 target_pos = None
                 distance = 99
-                
+
                 for e_unit in self.enemy_units:
                     temp_dist = getDistance(unt_pos, list(e_unit['location']))
                     if temp_dist < 2:
@@ -56,16 +65,20 @@ class SimpleAgent:
                         target_type = e_unit['unit']
                         target_pos = [e_unit['location'][0], e_unit['location'][1]]
                 
+                # -------------------SHOOTING ACTIONS------------------- #
                 if target_pos and unit['tag'] == 'Drone' and getDistance(unt_pos, target_pos) <= 1: # shoot
-                    movement.append(0)
+                    movement.append(0) # Movement 0 means shoot
                     target.append((target_pos[0], target_pos[1]))
                 elif target_pos and unit['tag'] == 'LightTank' and getDistance(unt_pos, target_pos) <= 2: # shoot
-                    movement.append(0)
+                    movement.append(0) # Movement 0 means shoot
                     target.append((target_pos[0], target_pos[1]))
                 elif target_pos and unit['tag'] == 'HeavyTank' and getDistance(unt_pos, target_pos) <= 2: # shoot
-                    movement.append(0)
+                    movement.append(0) # Movement 0 means shoot
                     target.append((target_pos[0], target_pos[1]))
+
+                # -------------------MOVING ACTIONS------------------- #
                 else:
+                    # -------------------INTELLIGENT MOVE------------------- #
                     possible_actions = []
                     for m_action in range(7):
                         move_x, move_y = getMovement(unt_pos, m_action)
@@ -83,8 +96,11 @@ class SimpleAgent:
                         else:
                             possible_actions.append([random(), target_pos, act_pos, m_action])
                     possible_actions.sort()
+
+                    # -------------------RANDOM MOVE------------------- #
                     if random() < 0.20:
                         movement.append(copy.copy(randint(1,6)))
+                    # -------------------INTELLIGENT MOVE------------------- #
                     else:
                         movement.append(copy.copy(possible_actions[0][-1]))
                     target.append(copy.copy(target_pos))
@@ -115,7 +131,7 @@ class SimpleAgent:
                 if target_pos is None:
                     target_pos = unt_pos
 
-                # -------------------INTELLIGENT MOVE------------------- #
+                # -------------------MOVING ACTIONS------------------- #
                 possible_actions = []
                 for m_action in range(7):
                     move_x, move_y = getMovement(unt_pos, m_action)
