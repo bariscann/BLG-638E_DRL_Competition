@@ -69,12 +69,12 @@ class RandomAgent:
         """
         self.decode_state(state)
 
+        location = []
         movement = []
         target = []
-        location = []
-
-        # -------------------UNIT MOVEMENT------------------- #
-        # Units are randomly moving on the maps
+        
+        # -------------------UNIT OPERATIONS------------------- #
+        # Units are randomly moving on the map
         for unit in self.my_units:
             location.append(unit['location'])
             movement.append(randint(0,6)) # Units can move or shoot

@@ -38,28 +38,32 @@ class SimpleAgent:
         self.enemy_base = decoded[self.enemy_team + 2]
         self.resources = decoded[4]
 
+        location = []
         movement = []
         target = []
-        location = []
+        
         counter = {"Truck":0,"LightTank":0,"HeavyTank":0,"Drone":0} # Count for units
 
+        # -------------------UNIT OPERATIONS------------------- #
         for unit in self.my_units:
             counter[unit['tag']]+=1
             location.append(unit['location'])
             unt_pos = [unit['location'][0], unit['location'][1]]
 
-            # -------------------LIGHT TANK, HEAVY_TANK, DRONE AGENTS------------------- #
+            # -------------------LIGHT TANK, HEAVY_TANK, DRONE UNITS------------------- #
             if unit['tag'] == 'LightTank' or unit['tag'] == 'Drone' or unit['tag'] == 'HeavyTank':
                 target_type = 9
                 target_pos = None
                 distance = 99
 
+                # Check for enemy units in the range
                 for e_unit in self.enemy_units:
                     temp_dist = getDistance(unt_pos, list(e_unit['location']))
-                    if temp_dist < 2:
-                        distance = temp_dist
-                        target_type = e_unit['unit']
-                        target_pos = [e_unit['location'][0], e_unit['location'][1]]
+                    if temp_dist < 2: # Enemy unit in 2 hex range, mark as target
+                        distance = temp_dist # Distance to enemy
+                        target_type = e_unit['unit'] # Enemy unit type
+                        target_pos = [e_unit['location'][0], e_unit['location'][1]] # Enemy location
+                    # Extra control for marking as enemy, enemy health check, distance check
                     elif e_unit['unit'] < target_type and e_unit['hp']>0 and distance>1:
                         distance = temp_dist
                         target_type = e_unit['unit']
@@ -105,7 +109,7 @@ class SimpleAgent:
                         movement.append(copy.copy(possible_actions[0][-1]))
                     target.append(copy.copy(target_pos))
 
-            # -------------------TRUCK AGENT------------------- #
+            # -------------------TRUCK UNIT------------------- #
             elif unit['tag'] == 'Truck':
                 dis = 999
                 target_pos = None
@@ -122,7 +126,7 @@ class SimpleAgent:
                         for u in self.my_units+self.enemy_units:
                             if u['location'][0] == res_pos[0] and u['location'][1] == res_pos[1] and not u['unit'] == unit['unit']:
                                 res_busy = True
-                                break
+                                break # If there is an unit on the resource break
                         if dist_tmp < dis and not res_busy:
                             dis = dist_tmp
                             target_pos = res_pos
