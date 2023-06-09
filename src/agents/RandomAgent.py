@@ -1,6 +1,6 @@
 from random import randint,random
 import time
-from utilities import *
+from .utilities import *
 
 class RandomAgent:
     def __init__(self,team,action_lenght):

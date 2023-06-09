@@ -33,7 +33,7 @@ def main():
     register_env("ray", lambda config: RiskyValley(args, agents))
     config= {"use_critic": True,
             "log_level": "WARN",
-             "num_workers": 20,
+             "num_workers": 1,
              "use_gae": True,
              "lambda": 1.0,
              "kl_coeff": 0.2,

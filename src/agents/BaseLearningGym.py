@@ -1,4 +1,4 @@
-from TemplateAgent import TemplateAgent
+from .TemplateAgent import TemplateAgent
 from agents.BaseLearningAgent import BaseLearningAgent
 import gym
 

@@ -1,6 +1,6 @@
 from random import randint,random
 import copy
-from utilities import *
+from .utilities import *
 
 # Tank moves to enemy truck, if within attack parameter, shoots
 # Truck moves to collect resource greedly

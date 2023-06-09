@@ -1,4 +1,4 @@
-from TemplateAgent import TemplateAgent
+from .TemplateAgent import TemplateAgent
 
 class BaseLearningAgent(TemplateAgent):
     """A base agent to write custom scripted agents.
