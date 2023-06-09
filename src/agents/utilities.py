@@ -134,6 +134,11 @@ def nearest_enemy(allied_unit_loc, enemy_locs):
 
     return enemy_locs[nearest_enemy_loc]
 
+def get_n_resource(obs):
+    resources = obs['resources']
+    resource_loc = np.argwhere(resources == 1)
+    return len(resource_loc)
+
 def multi_forced_anchor(movement, obs, team): # birden fazla truck için
     bases = obs['bases'][team]
     units = obs['units'][team]
@@ -289,3 +294,14 @@ def multi_reward_shape(obs, team): # Birden fazla truck için
     harvest_reward = load_reward + unload_reward + enemy_load_reward + enemy_unload_reward
     return harvest_reward, len(enemy), len(ally)
 
+def train_rule(train, raw_state, team, th=0):
+    loc_of_truck = truck_locs(raw_state, team)
+    n_resource = get_n_resource(raw_state)
+    if n_resource > 0:
+        n_truck = len(loc_of_truck)
+        if n_truck <= th:
+            train = stringToTag['Truck']
+    elif train == stringToTag['Truck']:
+        train = stringToTag['HeavyTank']
+        # train = stringToTag['Drone']
+    return train

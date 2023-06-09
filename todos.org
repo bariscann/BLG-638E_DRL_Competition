@@ -1,0 +1,14 @@
+[] rule belirleme
+* heavy tank ise ve motion camura batmasini istiyorsa engellesin
+* unitlerin vurma durumunun uzakliga bagli rule u olsun hepsinin vurma olasiligi ayni degil.
+* karada gidenler suya girmeyecek, daga girmeyecek,
+* rangeinde enemy varsa onu vurmasi yoksa,
+* kamyon enemy atak range'ine girdiyse kacsin
+* cok param varsa en pahalisini al (?) - resource var ama truck yoksa truck yarat
+* 0 geldiyse sorgula ilk olarak degistirip sonra gerekliyse 0 yap
+[] max_action_unit arttirma ilk oneri 10 geldi
+*	target belirleme bu sekilde mi olmali?
+	* 
+
+
+	
