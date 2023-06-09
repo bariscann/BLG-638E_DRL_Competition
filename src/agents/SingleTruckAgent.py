@@ -102,4 +102,4 @@ class TruckAgent:
         # Dimension check with assertions based on Template Agent
         assert len(movement) == self.action_lenght and len(target) == self.action_lenght
 
-        return (location, movement, target, train) # Return an action structure
+        return (location, movement, target, train)

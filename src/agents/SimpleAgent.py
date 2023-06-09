@@ -2,9 +2,10 @@ from random import randint,random
 import copy
 from .utilities import *
 
+
+# -------------------BOT CLASS-------------------
 # Tank moves to enemy truck, if within attack parameter, shoots
 # Truck moves to collect resource greedly
-
 
 class SimpleAgent:
     def __init__(self, team, action_lenght):
@@ -33,7 +34,7 @@ class SimpleAgent:
         target = []
         location = []
         counter = {"Truck":0,"LightTank":0,"HeavyTank":0,"Drone":0} # Count for units
-        
+
         for unit in self.my_units:
             counter[unit['tag']]+=1
             location.append(unit['location'])
