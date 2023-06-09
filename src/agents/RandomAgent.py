@@ -3,10 +3,9 @@ import time
 from .utilities import *
 
 
-#-------------------BOT CLASS-------------------
+# -------------------BOT CLASS------------------- #
 # Bot class that moves units randomly on the map
 # Creates new truck units with random prob < 0.05
-
 class RandomAgent:
     def __init__(self,team,action_lenght):
         self.team = team
@@ -64,6 +63,7 @@ class RandomAgent:
         target = []
         location = []
 
+        # -------------------UNIT MOVEMENT------------------- #
         # Units are randomly moving on the maps
         for unit in self.my_units:
             location.append(unit['location'])
@@ -71,6 +71,7 @@ class RandomAgent:
             unit_target = randint(0,len(self.enemy_units)-1)
             target.append(self.enemy_units[unit_target]['location'])
 
+        # -------------------NEW UNIT CREATION------------------- #
         train = 0 # Don't create any new unit on the map
         
         if random()<0.05:

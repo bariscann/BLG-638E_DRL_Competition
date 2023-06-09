@@ -3,7 +3,11 @@ from stable_baselines3 import A2C
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common import logger
 from stable_baselines3.common.callbacks import BaseCallback, CheckpointCallback
-from agents.RiskyValley import RiskyValley
+
+# Import bot classes
+from agents.SimpleAgent import SimpleAgent
+from agents.RandomAgent import RandomAgent
+
 import argparse
 
 
@@ -36,7 +40,6 @@ agents = [None, args.agentRed]
 
 
 class LoggerCallback(BaseCallback):
-
     def __init__(self, _format, log_on_start=None, suffix=""):
         super().__init__()
         self._format = _format
@@ -46,7 +49,6 @@ class LoggerCallback(BaseCallback):
         self.log_on_start = log_on_start
 
     def _on_training_start(self) -> None:
-
         _logger = self.globals["logger"].Logger.CURRENT
         _dir = _logger.dir
         log_format = logger.make_output_format(self._format, _dir, self.suffix)
@@ -63,7 +65,6 @@ class LoggerCallback(BaseCallback):
 
 
 if __name__ == "__main__":
-
     hyperparams = read_hypers()
 
     for agentsofglory in hyperparams:
@@ -86,4 +87,3 @@ if __name__ == "__main__":
         model.learn(callback=[loggcallback, checkpoint_callback],
                     tb_log_name=gamename,
                     **hyperparam["learn"])
-

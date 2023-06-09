@@ -3,10 +3,9 @@ import copy
 from .utilities import *
 
 
-# -------------------BOT CLASS-------------------
+# -------------------BOT CLASS------------------- #
 # Tank moves to enemy truck, if within attack parameter, shoots
 # Truck moves to collect resource greedly
-
 class SimpleAgent:
     def __init__(self, team, action_lenght):
         self.team = team
@@ -40,11 +39,12 @@ class SimpleAgent:
             location.append(unit['location'])
             unt_pos = [unit['location'][0], unit['location'][1]]
 
-            # LIGHT TANK, HEAVY_TANK, DRONE AGENTS
+            # -------------------LIGHT TANK, HEAVY_TANK, DRONE AGENTS------------------- #
             if unit['tag'] == 'LightTank' or unit['tag'] == 'Drone' or unit['tag'] == 'HeavyTank':
                 target_type = 9
                 target_pos = None
                 distance = 99
+                
                 for e_unit in self.enemy_units:
                     temp_dist = getDistance(unt_pos, list(e_unit['location']))
                     if temp_dist < 2:
@@ -89,14 +89,15 @@ class SimpleAgent:
                         movement.append(copy.copy(possible_actions[0][-1]))
                     target.append(copy.copy(target_pos))
 
-            # TRUCK AGENT        
+            # -------------------TRUCK AGENT------------------- #
             elif unit['tag'] == 'Truck':
                 dis = 999
                 target_pos = None
                 unt_pos = [unit['location'][0], unit['location'][1]]
-                if unit['load'] > 0:
+
+                if unit['load'] > 0: # Have gold on the truck
                     target_pos = [self.my_base[0], self.my_base[1]]
-                elif len(self.resources) > 0:
+                elif len(self.resources) > 0: # More golds on the map
                     for res in self.resources:
                         res_pos = [res[0], res[1]]
                         dist_tmp = getDistance(unt_pos, res_pos)
@@ -113,6 +114,8 @@ class SimpleAgent:
                     target_pos = unt_pos
                 if target_pos is None:
                     target_pos = unt_pos
+
+                # -------------------INTELLIGENT MOVE------------------- #
                 possible_actions = []
                 for m_action in range(7):
                     move_x, move_y = getMovement(unt_pos, m_action)
@@ -122,8 +125,10 @@ class SimpleAgent:
                     possible_actions.append([getDistance(target_pos, act_pos), target_pos, act_pos, m_action])
                 possible_actions.sort()
 
-                if random()<0.20:
+                # -------------------RANDOM MOVE------------------- #
+                if random()<0.20: # Randomly move on the map
                     movement.append(copy.copy(randint(1,6)))
+                # -------------------INTELLIGENT MOVE------------------- #
                 else:
                     movement.append(copy.copy(possible_actions[0][-1]))
                 target.append(copy.copy(target_pos))
@@ -131,11 +136,12 @@ class SimpleAgent:
                 movement.append(2)
                 target.append([0,0])  
         
-        # NEW UNIT CREATION
+        # -------------------NEW UNIT CREATION------------------- #
         train = 0 # Don't create any new unit on the map
         
-        #if random() < 0.2:
-        #    train = randint(1,4)
+        # Create new units randomly
+        # if random() < 0.2:
+        #    train = randint(1,4) # With random prob create new attack unit
 
         # Create new units based on condition
         if state["score"][self.team]>state["score"][self.enemy_team]+2:
@@ -154,3 +160,4 @@ class SimpleAgent:
             train = randint(2,4) # Create new attack units
         
         return (location, movement, target, train)
+       
