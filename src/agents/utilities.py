@@ -294,6 +294,7 @@ def multi_reward_shape(obs, team): # Birden fazla truck için
     harvest_reward = load_reward + unload_reward + enemy_load_reward + enemy_unload_reward
     return harvest_reward, len(enemy), len(ally)
 
+# ----------------------------------RULE FUNCTIONS---------------------------------- #
 def train_rule(train, raw_state, team, th=0):
     loc_of_truck = truck_locs(raw_state, team)
     n_resource = get_n_resource(raw_state)
@@ -305,3 +306,14 @@ def train_rule(train, raw_state, team, th=0):
         train = stringToTag['HeavyTank']
         # train = stringToTag['Drone']
     return train
+
+def movement_rule(movement, raw_state, team):
+    """ Movement rules for agents
+    """
+    # TRUCK Movement
+    # Attack unit movement
+
+    movement = multi_forced_anchor(movement, raw_state, team)
+    
+    
+    return None
