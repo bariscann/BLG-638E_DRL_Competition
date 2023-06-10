@@ -21,22 +21,26 @@ stringToTag = {
 movement_grid = [[(0, 0), (-1, 0), (0, -1), (1, 0), (1, 1), (0, 1), (-1, 1)],
 [(0, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 1), (-1, 0)]]
 
-double_distance = [(movement_grid[0][i][0] + movement_grid[1][i][0], movement_grid[0][i][1] + movement_grid[1][i][1]) for i in range(7)]
+# double_distance = [(movement_grid[0][i][0] + movement_grid[1][i][0], movement_grid[0][i][1] + movement_grid[1][i][1]) for i in range(7)]
+# other_double_distance = [(0,0), (0,-2), (-1,-1), (-1,1), (0,2), (1,1), ()]
 
 def getMovement(unit_position, action):
     return movement_grid[unit_position[1] % 2][action]
 
+"""
 def getActionToEscape(ally_loc, enemy_loc):
     distance = getDistance(ally_loc, enemy_loc)
-
+    dis_tuple = (ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1])
     if distance == 2:
-        # Change ally location indices
-        # return double_distance.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
-        return double_distance.index((ally_loc[1] - enemy_loc[1], ally_loc[0] - enemy_loc[0]))
+        if dis_tuple in double_distance:
+            return double_distance.index(dis_tuple)
+        else:
+            return reversed_double_distance.index(dis_tuple)
     else:
         right_movement_list = movement_grid[enemy_loc[1] % 2]
         # return right_movement_list.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
         return right_movement_list.index((ally_loc[1] - enemy_loc[1], ally_loc[0] - enemy_loc[0]))
+"""
 
 def decodeState(state):
     score = state['score']
@@ -218,6 +222,19 @@ def point_blank_shoot(allied_unit_loc, enemy_locs):
     else:
         return None
 
+def getEnemiesCanShoot(allied_unit_loc, enemy_locs):
+    distances = []
+    enemy_list = []
+    for enemy in enemy_locs:
+        dist = getDistance(allied_unit_loc, enemy)
+        if dist <= 2:
+            distances.append(dist)
+            enemy_list.append(enemy)
+    distances = np.array(distances)
+    sorted_index = np.argsort(distances)
+    enemy_list = np.array(enemy_list[sorted_index])
+    return enemy_list
+
 def necessary_obs(obs, team):
     ally_base = obs['bases'][team]
     enemy_base = obs['bases'][(team+1) % 2]
@@ -330,10 +347,13 @@ def train_rule(train, raw_state, team, th=0):
 def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     """ Movement rules for agents
     """
+    real_movement = np.copy(movement)
     movement = multi_forced_anchor(movement, raw_state, team)
 
     x_max, y_max = raw_state["resources"].shape
     types_of_units = getTypeOfUnits(locations, raw_state, team)
+
+    already_deadth = []
     for i, (x,y) in enumerate(locations):
         type_uf_unit = types_of_units[i]
         movement_unit = movement[i]
@@ -341,7 +361,7 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
         if type_uf_unit == stringToTag['Truck']:
             enemy_loc = point_blank_shoot([x,y], enemies.tolist())
             if enemy_loc:
-                movement[i] = getActionToEscape([x,y], enemy_loc)
+                movement[i] = real_movement[i]
 
         else:
             move_x, move_y = getMovement((x,y), movement_unit)
@@ -351,18 +371,19 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
 
             # TODO can change as raw_state['terrain'][act_pos[0]][act_pos[1]] != 0 if there is no terrian greater than 3
             if type_uf_unit == stringToTag['HeavyTank'] and raw_state['terrain'][act_pos[0]][act_pos[1]] != 0:
-                    movement[i] = (movement_unit + 3)%6
+                    movement[i] = 0 # (movement_unit + 3)%6
 
             elif type_uf_unit == stringToTag['LightTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
-                    movement[i] = (movement_unit + 3)%6
+                    movement[i] = 0 # (movement_unit + 3)%6
     
-            elif type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
-                    movement[i] = (movement_unit + 3)%6
+            # elif type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
+            #         movement[i] = (movement_unit + 3)%6
 
-            enemy_loc = point_blank_shoot([x,y], enemies.tolist())
+            enemy_locs = getEnemiesCanShoot([x,y], enemies.tolist())
             if enemy_loc:
                 enemy_order[i] = enemy_loc
                 movement[i] = 0
+                already_deadth.append(enemy_loc)
             """
             if len(enemies) > 0:
                 already_deadth = []
