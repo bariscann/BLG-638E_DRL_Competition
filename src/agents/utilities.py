@@ -4,6 +4,7 @@ from yaml import load
 import numpy as np
 import copy
 import time
+from statistics import mode
 
 tagToString = {
     1: "Truck",
@@ -186,6 +187,21 @@ def multi_forced_anchor(movement, obs, team): # birden fazla truck için
                         continue
     return movement
 
+def collect_resource(truck_loc, obs, team, movement):
+    resources = obs['resources']
+    resource_loc = np.argwhere(resources == 1)
+    loads = obs['loads'][team]
+    bases = obs['bases'][team]
+    base_loc = np.argwhere(bases == 1)
+    base_loc = base_loc.squeeze()
+    for reso in resource_loc:
+        if loads[truck_loc[0], truck_loc[1]].max() != 3 and (reso == truck_loc).all():
+            return 0
+        elif loads[truck_loc[0], truck_loc[1]].max() != 0 and (truck_loc == base_loc).all():
+            return 0
+        else:
+            return movement
+
 def forced_anchor(movement, obs, team_no):
     bases = obs['bases'][team_no]
     units = obs['units'][team_no]
@@ -349,38 +365,40 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     """ Movement rules for agents
     """
     real_movement = np.copy(movement)
-    movement = multi_forced_anchor(movement, raw_state, team)
+    # movement = multi_forced_anchor(movement, raw_state, team)
 
     x_max, y_max = raw_state["resources"].shape
     types_of_units = getTypeOfUnits(locations, raw_state, team)
-
+    unit_action_list = {1: [], 2: [], 3: [], 4:[]}
     already_deadth = []
     # TODO burada location 17 veya 34 ten fazla olabilir bu durumda patlayabilir.
     for i, (x,y) in enumerate(locations):
-        type_uf_unit = types_of_units[i]
+        type_of_unit = types_of_units[i]
         movement_unit = movement[i]
         
-        if type_uf_unit == stringToTag['Truck']:
+        if i > len(movement):
+            movement.append(mode(unit_action_list[type_of_unit]))
+            enemy_order.append([0,0])
+        unit_action_list[type_of_unit].append(movement[i])
+
+        if type_of_unit == stringToTag['Truck']:
+            movement[i] = collect_resource([x,y], raw_state, team, movement[i])
             enemy_loc = point_blank_shoot([x,y], enemies.tolist())
             if enemy_loc:
                 movement[i] = real_movement[i]
-
         else:
             move_x, move_y = getMovement((x,y), movement_unit)
             act_pos = [x + move_y, y + move_x]
-            if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[0] > y_max-1 or act_pos[1] > x_max-1:
+            if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[1] > y_max-1 or act_pos[0] > x_max-1:
                 act_pos = [x, y]
-
+            
             # TODO can change as raw_state['terrain'][act_pos[0]][act_pos[1]] != 0 if there is no terrian greater than 3
-            if type_uf_unit == stringToTag['HeavyTank'] and raw_state['terrain'][act_pos[0]][act_pos[1]] != 0:
+            if type_of_unit == stringToTag['HeavyTank'] and raw_state['terrain'][act_pos[0]][act_pos[1]] != 0:
                     movement[i] = 0 # (movement_unit + 3)%6
-
-            elif type_uf_unit == stringToTag['LightTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
+            elif type_of_unit == stringToTag['LightTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
                     movement[i] = 0 # (movement_unit + 3)%6
-    
             # elif type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
             #         movement[i] = (movement_unit + 3)%6
-
             enemy_locs = getEnemiesCanShoot([x,y], enemies.tolist())
             for enemy_loc in enemy_locs:
                 if enemy_loc and (enemy_loc not in already_deadth):
@@ -388,19 +406,4 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
                     movement[i] = 0
                     already_deadth.append(enemy_loc)
                     break
-            """
-            0 0 1 movement 5 
-            0 3 2 3 4 location
-            if len(enemies) > 0:
-                already_deadth = []
-                for k in range(len(enemies)):
-                    if (getDistance(locations[i], enemies[k]) <= 3) and (k not in already_deadth):
-                        movement[i] = 0
-                        enemy_order[i] = enemies[k]
-                        already_deadth.append(k)
-            """
-        
     return movement, enemy_order
-
-def give_action_for_extra():
-    return

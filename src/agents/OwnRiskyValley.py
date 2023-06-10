@@ -147,7 +147,6 @@ class OwnRiskyValley(BaseLearningAgentGym):
         
         # TODO burada action olarak 0 uretilen noktalari belirli distler ile baska degerlere ata
 
-
         if 0 > len(allies):
             print("why do you have negative allies ?")
             raise ValueError
@@ -205,40 +204,8 @@ class OwnRiskyValley(BaseLearningAgentGym):
             #     counter += 1
             # while len(locations) > OwnRiskyValley.MAX_ACTION_UNIT:
             #     locations.pop(-1)
-
-        # movement = multi_forced_anchor(movement, raw_state, team)
+            
         movement, enemy_order = movement_rule(movement, raw_state, team, locations, enemies, enemy_order)
-
-        if len(locations) > 0:
-            locations = list(map(list, locations))
-
-
-        #locations'dan biri, bir düşmana 2 adımda veya daha yakınsa dur (movement=0) ve ona ateş et (target = arg.min(distances))
-        # TODO burada yakinsa vur diyor, ben clone ekledim ki kaybetmeyelim enemyleri
-        if len(enemies) > 0:
-            already_deadth = []
-            selected_locations = []
-            m = 0
-            for i in range(len(locations)):
-                for k in range(len(enemies)):
-                    if (getDistance(locations[i], enemies[k]) <= 3) and (k not in already_deadth):
-                        movement[m] = 0
-                        enemy_order[i] = enemies[k]
-                        already_deadth.append(k)
-                        selected_locations.append(locations[i])
-                        m += 1
-                        
-        else:
-            # TODO trucklar a oncelik ver.
-            pass
-        
-        # clone_enemy_order = enemy_order.copy()
-        #     for i in range(len(locations)):
-        #         for k in range(len(enemy_order)):
-        #             if getDistance(locations[i], clone_enemy_order[k]) <= 3:
-        #                 movement[i] = 0
-        #                 enemy_order[i] = clone_enemy_order[k]
-
 
         locations = list(map(tuple, locations))
         return [locations, movement, enemy_order, train]
