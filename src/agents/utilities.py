@@ -30,17 +30,18 @@ def getActionToEscape(ally_loc, enemy_loc):
     distance = getDistance(ally_loc, enemy_loc)
 
     if distance == 2:
-        return double_distance.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
+        # Change ally location indices
+        # return double_distance.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
+        return double_distance.index((ally_loc[1] - enemy_loc[1], ally_loc[0] - enemy_loc[0]))
     else:
         right_movement_list = movement_grid[enemy_loc[1] % 2]
-        return right_movement_list.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
+        # return right_movement_list.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
+        return right_movement_list.index((ally_loc[1] - enemy_loc[1], ally_loc[0] - enemy_loc[0]))
 
 def decodeState(state):
-    # WAS COMMENTED
     score = state['score']
     turn = state['turn']
     max_turn = state['max_turn']
-    # WAS COMMENTED
     units = state['units']
     hps = state['hps']
     bases = state['bases']
@@ -206,7 +207,7 @@ def Shoot(obs, loc, team):
     enemy_list = enemy_list.squeeze()
 
 
-def point_blank_shoot(allied_unit_loc, enemy_locs, action):
+def point_blank_shoot(allied_unit_loc, enemy_locs):
     # yakında düşman varsa onun loc unu döndürüyor
     distances = []
     for enemy in enemy_locs:
@@ -338,9 +339,9 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
         movement_unit = movement[i]
         
         if type_uf_unit == stringToTag['Truck']:
-            enemy_loc = point_blank_shoot((x,y), enemies)
+            enemy_loc = point_blank_shoot([x,y], enemies.tolist())
             if enemy_loc:
-                movement[i] = getActionToEscape((x,y), enemy_loc)
+                movement[i] = getActionToEscape([x,y], enemy_loc)
 
         else:
             move_x, move_y = getMovement((x,y), movement_unit)
@@ -358,7 +359,7 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
             elif type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
                     movement[i] = (movement_unit + 3)%6
 
-            enemy_loc = point_blank_shoot((x,y), enemies)
+            enemy_loc = point_blank_shoot([x,y], enemies.tolist())
             if enemy_loc:
                 enemy_order[i] = enemy_loc
                 movement[i] = 0
