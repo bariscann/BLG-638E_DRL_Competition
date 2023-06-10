@@ -231,8 +231,9 @@ def getEnemiesCanShoot(allied_unit_loc, enemy_locs):
             distances.append(dist)
             enemy_list.append(enemy)
     distances = np.array(distances)
+    enemy_list = np.array(enemy_list)
     sorted_index = np.argsort(distances)
-    enemy_list = np.array(enemy_list[sorted_index])
+    enemy_list = enemy_list[sorted_index]
     return enemy_list
 
 def necessary_obs(obs, team):
@@ -354,6 +355,7 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     types_of_units = getTypeOfUnits(locations, raw_state, team)
 
     already_deadth = []
+    # TODO burada location 17 veya 34 ten fazla olabilir bu durumda patlayabilir.
     for i, (x,y) in enumerate(locations):
         type_uf_unit = types_of_units[i]
         movement_unit = movement[i]
@@ -380,11 +382,15 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
             #         movement[i] = (movement_unit + 3)%6
 
             enemy_locs = getEnemiesCanShoot([x,y], enemies.tolist())
-            if enemy_loc:
-                enemy_order[i] = enemy_loc
-                movement[i] = 0
-                already_deadth.append(enemy_loc)
+            for enemy_loc in enemy_locs:
+                if enemy_loc and (enemy_loc not in already_deadth):
+                    enemy_order[i] = enemy_loc
+                    movement[i] = 0
+                    already_deadth.append(enemy_loc)
+                    break
             """
+            0 0 1 movement 5 
+            0 3 2 3 4 location
             if len(enemies) > 0:
                 already_deadth = []
                 for k in range(len(enemies)):
