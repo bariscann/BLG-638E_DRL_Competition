@@ -85,10 +85,10 @@ class SimpleAgent:
                     # -------------------INTELLIGENT MOVE------------------- #
                     possible_actions = []
                     for m_action in range(7):
-                        move_x, move_y = getMovement(unt_pos, m_action)
+                        move_x, move_y = getMovement(unt_pos, m_action) # Calculate position based on movement
                         act_pos = [unt_pos[0] + move_y, unt_pos[1] + move_x]
                         if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[0] > self.y_max-1 or act_pos[1] > self.x_max-1:
-                            act_pos = [unt_pos[0], unt_pos[1]]
+                            act_pos = [unt_pos[0], unt_pos[1]] # Check map boundries
                         if unit['tag'] == 'HeavyTank' and state['terrain'][act_pos[0]][act_pos[1]] == 1:
                             # Heavy avoiding dirt
                             continue
