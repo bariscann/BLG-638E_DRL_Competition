@@ -329,12 +329,7 @@ def train_rule(train, raw_state, team, th=0):
 def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     """ Movement rules for agents
     """
-    # MOVING ACTION
-    # Heavy Tank
-    
-    # TRUCK Movement
     movement = multi_forced_anchor(movement, raw_state, team)
-
 
     x_max, y_max = raw_state["resources"].shape
     types_of_units = getTypeOfUnits(locations, raw_state, team)
@@ -354,30 +349,20 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
                 act_pos = [x, y]
 
             # TODO can change as raw_state['terrain'][act_pos[0]][act_pos[1]] != 0 if there is no terrian greater than 3
-            if type_uf_unit == stringToTag['HeavyTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 1 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
-                enemy_loc = point_blank_shoot((x,y), enemies)
-                if enemy_loc:
-                    enemy_order[i] = enemy_loc
-                    movement[i] = 0
-                else:
+            if type_uf_unit == stringToTag['HeavyTank'] and raw_state['terrain'][act_pos[0]][act_pos[1]] != 0:
                     movement[i] = (movement_unit + 3)%6
 
-            if type_uf_unit == stringToTag['LightTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
-                enemy_loc = point_blank_shoot((x,y), enemies)
-                if enemy_loc:
-                    enemy_order[i] = enemy_loc
-                    movement[i] = 0
-                else:
+            elif type_uf_unit == stringToTag['LightTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
                     movement[i] = (movement_unit + 3)%6
     
-            if type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
-                enemy_loc = point_blank_shoot((x,y), enemies)
-                if enemy_loc:
-                    enemy_order[i] = enemy_loc
-                    movement[i] = 0
-                else:
+            elif type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
                     movement[i] = (movement_unit + 3)%6
 
+            enemy_loc = point_blank_shoot((x,y), enemies)
+            if enemy_loc:
+                enemy_order[i] = enemy_loc
+                movement[i] = 0
+            """
             if len(enemies) > 0:
                 already_deadth = []
                 for k in range(len(enemies)):
@@ -385,7 +370,9 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
                         movement[i] = 0
                         enemy_order[i] = enemies[k]
                         already_deadth.append(k)
-
-
+            """
         
     return movement, enemy_order
+
+def give_action_for_extra():
+    return
