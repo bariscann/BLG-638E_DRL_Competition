@@ -21,10 +21,19 @@ stringToTag = {
 movement_grid = [[(0, 0), (-1, 0), (0, -1), (1, 0), (1, 1), (0, 1), (-1, 1)],
 [(0, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 1), (-1, 0)]]
 
+double_distance = [(movement_grid[0][i][0] + movement_grid[1][i][0], movement_grid[0][i][1] + movement_grid[1][i][1]) for i in range(7)]
 
 def getMovement(unit_position, action):
     return movement_grid[unit_position[1] % 2][action]
 
+def getActionToEscape(ally_loc, enemy_loc):
+    distance = getDistance(ally_loc, enemy_loc)
+
+    if distance == 2:
+        return double_distance.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
+    else:
+        right_movement_list = movement_grid[enemy_loc[1] % 2]
+        return right_movement_list.index((ally_loc[0] - enemy_loc[0], ally_loc[1] - enemy_loc[1]))
 
 def decodeState(state):
     # WAS COMMENTED
@@ -325,23 +334,58 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     
     # TRUCK Movement
     movement = multi_forced_anchor(movement, raw_state, team)
-    # Attack unit movement
 
 
+    x_max, y_max = raw_state["resources"].shape
     types_of_units = getTypeOfUnits(locations, raw_state, team)
     for i, (x,y) in enumerate(locations):
         type_uf_unit = types_of_units[i]
         movement_unit = movement[i]
-        if type_uf_unit == stringToTag['HeavyTank']:
+        
+        if type_uf_unit == stringToTag['Truck']:
+            enemy_loc = point_blank_shoot((x,y), enemies)
+            if enemy_loc:
+                movement[i] = getActionToEscape((x,y), enemy_loc)
+
+        else:
             move_x, move_y = getMovement((x,y), movement_unit)
             act_pos = [x + move_y, y + move_x]
-            if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[0] > self.y_max-1 or act_pos[1] > self.x_max-1:
+            if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[0] > y_max-1 or act_pos[1] > x_max-1:
                 act_pos = [x, y]
-            if raw_state['terrain'][act_pos[0]][act_pos[1]] == 1:
+
+            # TODO can change as raw_state['terrain'][act_pos[0]][act_pos[1]] != 0 if there is no terrian greater than 3
+            if type_uf_unit == stringToTag['HeavyTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 1 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
                 enemy_loc = point_blank_shoot((x,y), enemies)
                 if enemy_loc:
                     enemy_order[i] = enemy_loc
                     movement[i] = 0
                 else:
                     movement[i] = (movement_unit + 3)%6
-    return None
+
+            if type_uf_unit == stringToTag['LightTank'] and (raw_state['terrain'][act_pos[0]][act_pos[1]] == 2 or raw_state['terrain'][act_pos[0]][act_pos[1]] == 3):
+                enemy_loc = point_blank_shoot((x,y), enemies)
+                if enemy_loc:
+                    enemy_order[i] = enemy_loc
+                    movement[i] = 0
+                else:
+                    movement[i] = (movement_unit + 3)%6
+    
+            if type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
+                enemy_loc = point_blank_shoot((x,y), enemies)
+                if enemy_loc:
+                    enemy_order[i] = enemy_loc
+                    movement[i] = 0
+                else:
+                    movement[i] = (movement_unit + 3)%6
+
+            if len(enemies) > 0:
+                already_deadth = []
+                for k in range(len(enemies)):
+                    if (getDistance(locations[i], enemies[k]) <= 3) and (k not in already_deadth):
+                        movement[i] = 0
+                        enemy_order[i] = enemies[k]
+                        already_deadth.append(k)
+
+
+        
+    return movement, enemy_order

@@ -6,7 +6,7 @@
 * rangeinde enemy varsa onu vurmasi yoksa,
 * kamyon enemy atak range'ine girdiyse kacsin
 * cok param varsa en pahalisini al (?) - resource var ama truck yoksa truck yarat
-* 0 geldiyse sorgula ilk olarak degistirip sonra gerekliyse 0 yap
+* 0 geldiyse sorgula ilk olarak degistirip sonra gerekliyse 0 yap --yapmayabiliriz
 [] max_action_unit arttirma ilk oneri 10 geldi
 *	target belirleme bu sekilde mi olmali?
 	* 
