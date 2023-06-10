@@ -1,5 +1,6 @@
 [] rule belirleme
 * heavy tank ise ve motion camura batmasini istiyorsa engellesin
+	* yakında düşman varsa vuracak yoksa çamurun tersine hamle yapacak
 * unitlerin vurma durumunun uzakliga bagli rule u olsun hepsinin vurma olasiligi ayni degil.
 * karada gidenler suya girmeyecek, daga girmeyecek,
 * rangeinde enemy varsa onu vurmasi yoksa,

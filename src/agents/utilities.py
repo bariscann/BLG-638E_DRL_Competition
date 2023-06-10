@@ -198,12 +198,15 @@ def Shoot(obs, loc, team):
 
 
 def point_blank_shoot(allied_unit_loc, enemy_locs, action):
+    # yakında düşman varsa onun loc unu döndürüyor
     distances = []
     for enemy in enemy_locs:
         distances.append(getDistance(allied_unit_loc, enemy))
     if min(distances) <= 2:
         nearest_enemy_loc = np.argmin(distances)
         return enemy_locs[nearest_enemy_loc]
+    else:
+        return None
 
 def necessary_obs(obs, team):
     ally_base = obs['bases'][team]
@@ -294,6 +297,13 @@ def multi_reward_shape(obs, team): # Birden fazla truck için
     harvest_reward = load_reward + unload_reward + enemy_load_reward + enemy_unload_reward
     return harvest_reward, len(enemy), len(ally)
 
+def getTypeOfUnits(unit_locs, raw_state, team):
+    units = np.array(raw_state['units'][team])
+    types = []
+    for x, y in unit_locs:
+        types.append(units[x][y])
+    return types
+
 # ----------------------------------RULE FUNCTIONS---------------------------------- #
 def train_rule(train, raw_state, team, th=0):
     loc_of_truck = truck_locs(raw_state, team)
@@ -307,13 +317,31 @@ def train_rule(train, raw_state, team, th=0):
         # train = stringToTag['Drone']
     return train
 
-def movement_rule(movement, raw_state, team):
+def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     """ Movement rules for agents
     """
+    # MOVING ACTION
+    # Heavy Tank
+    
     # TRUCK Movement
+    movement = multi_forced_anchor(movement, raw_state, team)
     # Attack unit movement
 
-    movement = multi_forced_anchor(movement, raw_state, team)
-    
-    
+
+    types_of_units = getTypeOfUnits(locations, raw_state, team)
+    for i, (x,y) in enumerate(locations):
+        type_uf_unit = types_of_units[i]
+        movement_unit = movement[i]
+        if type_uf_unit == stringToTag['HeavyTank']:
+            move_x, move_y = getMovement((x,y), movement_unit)
+            act_pos = [x + move_y, y + move_x]
+            if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[0] > self.y_max-1 or act_pos[1] > self.x_max-1:
+                act_pos = [x, y]
+            if raw_state['terrain'][act_pos[0]][act_pos[1]] == 1:
+                enemy_loc = point_blank_shoot((x,y), enemies)
+                if enemy_loc:
+                    enemy_order[i] = enemy_loc
+                    movement[i] = 0
+                else:
+                    movement[i] = (movement_unit + 3)%6
     return None

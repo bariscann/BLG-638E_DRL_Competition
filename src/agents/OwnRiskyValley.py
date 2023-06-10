@@ -5,7 +5,8 @@ from gym import spaces
 import numpy as np
 import yaml
 from game import Game
-from .utilities import multi_forced_anchor, necessary_obs, decode_location, multi_reward_shape, enemy_locs, ally_locs, getDistance, train_rule
+from .utilities import multi_forced_anchor, necessary_obs, decode_location, multi_reward_shape, enemy_locs, ally_locs, getDistance
+from utilities import train_rule, movement_rule
 
 
 class OwnRiskyValley(BaseLearningAgentGym):
@@ -206,9 +207,11 @@ class OwnRiskyValley(BaseLearningAgentGym):
             #     locations.pop(-1)
 
         # movement = multi_forced_anchor(movement, raw_state, team)
-
+        movement, enemy_order = movement_rule(movement, raw_state, team, locations, enemies, enemy_order)
+        
         if len(locations) > 0:
             locations = list(map(list, locations))
+
 
         #locations'dan biri, bir düşmana 2 adımda veya daha yakınsa dur (movement=0) ve ona ateş et (target = arg.min(distances))
         # TODO burada yakinsa vur diyor, ben clone ekledim ki kaybetmeyelim enemyleri
