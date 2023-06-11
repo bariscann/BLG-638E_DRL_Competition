@@ -395,7 +395,7 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     for i, (x,y) in enumerate(locations):
         type_of_unit = types_of_units[i]
 
-        if i > len(movement):
+        if i >= len(movement):
             movement.append(mode(unit_action_list[type_of_unit]))
             enemy_order.append([0,0])
         
