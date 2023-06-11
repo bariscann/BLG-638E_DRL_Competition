@@ -369,6 +369,8 @@ def train_rule(train, raw_state, team, th=0):
     #         train = stringToTag['Truck']
     if n_resource == 0 and train == stringToTag['Truck']:
         train = stringToTag['LightTank']
+    elif len(loc_of_truck) > 20:
+        train = 0
     if train != stringToTag['Truck'] and enemy_n_htank > n_drones:
         train = stringToTag['Drone']
         # train = stringToTag['Drone']
@@ -385,7 +387,7 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     
     types_of_units = np.array(types_of_units)
     locations = np.array(locations)
-    sorted_index = np.argsort(types_of_units)
+    sorted_index = np.where(types_of_units==1)[0].tolist() + np.where(types_of_units!=1)[0].tolist() #np.argsort(types_of_units)
     locations = locations[sorted_index]
     types_of_units = types_of_units[sorted_index]
 
@@ -399,7 +401,11 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
             if type_of_unit > 4:
                 movement.append(0)
             else:
-                movement.append(mode(unit_action_list[type_of_unit]))
+                list_for_mode = unit_action_list[type_of_unit]
+                if len(list_for_mode) == 0:
+                    movement.append(0)
+                else:
+                    movement.append(mode(list_for_mode))
             enemy_order.append([0,0])
         
         if type_of_unit > 4:
