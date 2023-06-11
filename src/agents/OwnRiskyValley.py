@@ -205,7 +205,7 @@ class OwnRiskyValley(BaseLearningAgentGym):
             # while len(locations) > OwnRiskyValley.MAX_ACTION_UNIT:
             #     locations.pop(-1)
             
-        movement, enemy_order = movement_rule(movement, raw_state, team, locations, enemies, enemy_order)
+        locations, movement, enemy_order = movement_rule(movement, raw_state, team, locations, enemies, enemy_order)
 
         locations = list(map(tuple, locations))
         return [locations, movement, enemy_order, train]

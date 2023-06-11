@@ -10,6 +10,15 @@
 [] max_action_unit arttirma ilk oneri 10 geldi
 *	target belirleme bu sekilde mi olmali?
 	* 
+[] model
+* model fine-tuning (belki ppo denenebilir) - vakti varsa Sadi
+	* çıkan raporlama belki Sadi
+* waters -> valley ve valley -> waters (kapıştırırz belki)
+* x timestamp waters -> 2x timestamp valley -> x timestamp waters
 
-
-	
+[] rapor
+* rule ları rapora yazma - Ömür or Barış
+	* probability hiç eklemek yapısı bozulmasın diye
+	* saldırıyı yönlendirmeye önem verdik o yüzden agent truck ın gidişini 
+* model sonuçları nı ekleme - loss, reward
+* modelin hikayesini anlatma - waters -> valley gibi daha rahat harita fln

@@ -18,6 +18,11 @@ stringToTag = {
     "HeavyTank": 3,
     "Drone": 4,
     }
+shoot_range = {
+    "LightTank": 2,
+    "HeavyTank": 2,
+    "Drone": 1,
+}
 
 movement_grid = [[(0, 0), (-1, 0), (0, -1), (1, 0), (1, 1), (0, 1), (-1, 1)],
 [(0, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 1), (-1, 0)]]
@@ -199,8 +204,7 @@ def collect_resource(truck_loc, obs, team, movement):
             return 0
         elif loads[truck_loc[0], truck_loc[1]].max() != 0 and (truck_loc == base_loc).all():
             return 0
-        else:
-            return movement
+    return movement
 
 def forced_anchor(movement, obs, team_no):
     bases = obs['bases'][team_no]
@@ -238,12 +242,15 @@ def point_blank_shoot(allied_unit_loc, enemy_locs):
     else:
         return None
 
-def getEnemiesCanShoot(allied_unit_loc, enemy_locs):
+def getEnemiesCanShoot(allied_unit_loc, enemy_locs, type_of_unit, enemy_type_of_units):
     distances = []
     enemy_list = []
-    for enemy in enemy_locs:
+    for i, enemy in enumerate(enemy_locs):
+        type_of_enemy = enemy_type_of_units[i]
+        if (type_of_unit == stringToTag["HeavyTank"] and type_of_enemy == stringToTag["Drone"]) or type_of_enemy > 4:
+            continue
         dist = getDistance(allied_unit_loc, enemy)
-        if dist <= 2:
+        if dist <= shoot_range[tagToString[type_of_unit]]:
             distances.append(dist)
             enemy_list.append(enemy)
     distances = np.array(distances)
@@ -352,40 +359,57 @@ def getTypeOfUnits(unit_locs, raw_state, team):
 def train_rule(train, raw_state, team, th=0):
     loc_of_truck = truck_locs(raw_state, team)
     n_resource = get_n_resource(raw_state)
-    if n_resource > 0:
-        n_truck = len(loc_of_truck)
-        if n_truck <= th:
-            train = stringToTag['Truck']
-    elif train == stringToTag['Truck']:
-        train = stringToTag['HeavyTank']
+    enemy_units = raw_state['units'][(team+1)%2]
+    enemy_n_htank = len(np.argwhere(enemy_units == 3))
+    our_units = raw_state['units'][team]
+    n_drones = len(np.argwhere(our_units == 4))
+    # if n_resource > 0:
+    #     n_truck = len(loc_of_truck)
+    #     if n_truck <= th:
+    #         train = stringToTag['Truck']
+    if n_resource == 0 and train == stringToTag['Truck']:
+        train = stringToTag['LightTank']
+    if train != stringToTag['Truck'] and enemy_n_htank > n_drones:
+        train = stringToTag['Drone']
         # train = stringToTag['Drone']
     return train
 
 def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     """ Movement rules for agents
     """
-    real_movement = np.copy(movement)
     # movement = multi_forced_anchor(movement, raw_state, team)
 
     x_max, y_max = raw_state["resources"].shape
     types_of_units = getTypeOfUnits(locations, raw_state, team)
+    enemy_type_of_units = getTypeOfUnits(enemies, raw_state, (team+1)%2)
+    
+    types_of_units = np.array(types_of_units)
+    locations = np.array(locations)
+    sorted_index = np.argsort(types_of_units)
+    locations = locations[sorted_index]
+    types_of_units = types_of_units[sorted_index]
+
     unit_action_list = {1: [], 2: [], 3: [], 4:[]}
     already_deadth = []
     # TODO burada location 17 veya 34 ten fazla olabilir bu durumda patlayabilir.
     for i, (x,y) in enumerate(locations):
         type_of_unit = types_of_units[i]
-        movement_unit = movement[i]
-        
+
         if i > len(movement):
             movement.append(mode(unit_action_list[type_of_unit]))
             enemy_order.append([0,0])
+        
+        if type_of_unit > 4:
+            movement[i] = 0
+            continue
+        # print(type_of_unit, type_of_unit)
         unit_action_list[type_of_unit].append(movement[i])
-
+        movement_unit = movement[i]
         if type_of_unit == stringToTag['Truck']:
             movement[i] = collect_resource([x,y], raw_state, team, movement[i])
             enemy_loc = point_blank_shoot([x,y], enemies.tolist())
             if enemy_loc:
-                movement[i] = real_movement[i]
+                movement[i] = movement_unit
         else:
             move_x, move_y = getMovement((x,y), movement_unit)
             act_pos = [x + move_y, y + move_x]
@@ -399,11 +423,14 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
                     movement[i] = 0 # (movement_unit + 3)%6
             # elif type_uf_unit == stringToTag['Drone'] and raw_state['terrain'][act_pos[0]][act_pos[1]] == 2:
             #         movement[i] = (movement_unit + 3)%6
-            enemy_locs = getEnemiesCanShoot([x,y], enemies.tolist())
+            enemy_locs = getEnemiesCanShoot([x,y], enemies.tolist(), type_of_unit, enemy_type_of_units)
             for enemy_loc in enemy_locs:
-                if enemy_loc and (enemy_loc not in already_deadth):
+                enemy_loc = enemy_loc.tolist()
+                # if enemy_loc not in already_deadth:
+                if True:
                     enemy_order[i] = enemy_loc
                     movement[i] = 0
                     already_deadth.append(enemy_loc)
                     break
-    return movement, enemy_order
+        
+    return locations, movement, enemy_order
