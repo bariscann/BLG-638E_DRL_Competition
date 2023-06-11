@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
         env = SubprocVecEnv([lambda: OwnRiskyValley(args, agents) for i in range(hyperparam["env"]["n_envs"])])
         checkpoint_callback = CheckpointCallback(save_freq=100000, save_path='./models/RiskyValley_Default',
-                                                 name_prefix='tsts')
+                                                 name_prefix='valley')
         if not args.keepLastModel:
             model = A2C(env=env,
                         verbose=1,
@@ -102,11 +102,6 @@ if __name__ == "__main__":
                 tensorboard_log="logs",
                 **hyperparam["agent"]
             )
-
-        model = A2C(env=env,
-                    verbose=1,
-                    tensorboard_log="logs",
-                    **hyperparam["agent"])
 
         model.learn(callback=[loggcallback, checkpoint_callback],
                     tb_log_name=gamename,
