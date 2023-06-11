@@ -278,7 +278,7 @@ def necessary_obs(obs, team):
     new_obs = [*ally_unit_loc.tolist(), *enemy_unit_loc.tolist(), *ally_base_loc.tolist(), *enemy_base_loc.tolist(), *resource, *truck_load]
     
     if len(new_obs) == 20:
-        print(new_obs)
+        # print(new_obs)
         time.sleep(1)
     return new_obs
 
@@ -331,11 +331,11 @@ def multi_reward_shape(obs, team): # Birden fazla truck için
 
     for truck in trucks:
         for reso in resource_loc:
-            print(reso,"RESOURCE")
+            # print(reso,"RESOURCE")
             if not isinstance(truck, np.int64):
-                print(loads.shape, "load shape")
-                print(loads[truck[0], truck[1]].shape, "load at truck")
-                print(truck.shape, "Last Truck")
+                # print(loads.shape, "load shape")
+                # print(loads[truck[0], truck[1]].shape, "load at truck")
+                # print(truck.shape, "Last Truck")
                 if (reso == truck).all():
                     if loads[truck[0], truck[1]].max() != 3: 
                         load_reward += 10
