@@ -236,7 +236,7 @@ def point_blank_shoot(allied_unit_loc, enemy_locs):
     distances = []
     for enemy in enemy_locs:
         distances.append(getDistance(allied_unit_loc, enemy))
-    if min(distances) <= 2:
+    if len(distances) != 0 and min(distances) <= 2:
         nearest_enemy_loc = np.argmin(distances)
         return enemy_locs[nearest_enemy_loc]
     else:
@@ -396,7 +396,10 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
         type_of_unit = types_of_units[i]
 
         if i >= len(movement):
-            movement.append(mode(unit_action_list[type_of_unit]))
+            if type_of_unit > 4:
+                movement.append(0)
+            else:
+                movement.append(mode(unit_action_list[type_of_unit]))
             enemy_order.append([0,0])
         
         if type_of_unit > 4:
