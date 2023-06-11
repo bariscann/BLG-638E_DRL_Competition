@@ -369,7 +369,9 @@ def train_rule(train, raw_state, team, th=0):
     #         train = stringToTag['Truck']
     if n_resource == 0 and train == stringToTag['Truck']:
         train = stringToTag['LightTank']
-    elif len(loc_of_truck) > 20:
+    elif len(loc_of_truck) > 10:
+        train = 0
+    elif len(loc_of_truck) > n_resource/2 + 1 and train == stringToTag['Truck']:
         train = 0
     if train != stringToTag['Truck'] and enemy_n_htank > n_drones:
         train = stringToTag['Drone']
