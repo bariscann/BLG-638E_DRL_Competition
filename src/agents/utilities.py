@@ -355,11 +355,58 @@ def getTypeOfUnits(unit_locs, raw_state, team):
         types.append(units[x][y])
     return types
 
+def goto_resource(unt_pos, y_max, x_max, unit_terrian, movement, resources, enemies):
+    possible_actions = []
+    dis = 99999999999
+    target_pos = None
+    for res in resources:
+        res_pos = [res[0], res[1]]
+        # enemy_dis = 0.0001
+        # for enemy_loc in enemies:
+        #     enemy_dis += getDistance(res_pos, enemy_loc)
+
+        dist_tmp = getDistance([0, unt_pos[1]], [0,res_pos[1]]) #+ (300/enemy_dis)
+        res_busy = False
+        if dist_tmp < dis and not res_busy:
+            dis = dist_tmp
+            target_pos = res_pos
+    if target_pos is None:
+        return movement
+    for m_action in range(1,7):
+        move_x, move_y = getMovement(unt_pos, m_action)
+        act_pos = [unt_pos[0] + move_y, unt_pos[1] + move_x]
+        if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[1] > y_max - 1 or act_pos[0] > x_max-1:
+            act_pos = [unt_pos[0] ,unt_pos[1]]
+        if unit_terrian[act_pos[0]][act_pos[1]] == 0 or unit_terrian[act_pos[0]][act_pos[1]] == 1:
+            possible_actions.append([getDistance(target_pos, act_pos), m_action])
+    possible_actions.sort()
+    for act in possible_actions[0:3]:
+        if movement == act[1]:
+            return movement
+    return possible_actions[0][1]
+
+def goto_base(unt_pos, base_loc, y_max, x_max, unit_terrian, movement):
+    possible_actions = []
+    target_pos = [base_loc[0], base_loc[1]]
+    for m_action in range(1,7):
+        move_x, move_y = getMovement(unt_pos, m_action)
+        act_pos = [unt_pos[0] + move_y, unt_pos[1] + move_x]
+        if act_pos[0] < 0 or act_pos[1] < 0 or act_pos[1] > y_max - 1 or act_pos[0] > x_max-1:
+            act_pos = [unt_pos[0] ,unt_pos[1]]
+        if unit_terrian[act_pos[0]][act_pos[1]] == 0 or unit_terrian[act_pos[0]][act_pos[1]] == 1:
+            possible_actions.append([getDistance(target_pos, act_pos), m_action])
+    possible_actions.sort()
+    for act in possible_actions[0:3]:
+        if movement == act[1]:
+            return movement
+    return possible_actions[0][1]
+
 # ----------------------------------RULE FUNCTIONS---------------------------------- #
 def train_rule(train, raw_state, team, th=0):
+    enemy_team = (team+1)%2
     loc_of_truck = truck_locs(raw_state, team)
     n_resource = get_n_resource(raw_state)
-    enemy_units = raw_state['units'][(team+1)%2]
+    enemy_units = raw_state['units'][enemy_team]
     enemy_n_htank = len(np.argwhere(enemy_units == 3))
     our_units = raw_state['units'][team]
     n_drones = len(np.argwhere(our_units == 4))
@@ -367,11 +414,21 @@ def train_rule(train, raw_state, team, th=0):
     #     n_truck = len(loc_of_truck)
     #     if n_truck <= th:
     #         train = stringToTag['Truck']
+    our_score = raw_state['score'][team]
+    enemy_score = raw_state['score'][enemy_team]
+    if len(loc_of_truck) < 1:
+        return 1
+    if our_score <= enemy_score+2 or len(our_units) > len(enemy_units):
+        if len(loc_of_truck) < 1:
+            return 1
+        return 0
+    truck_limit = 10
+    # truck_limit = min(truck_limit, our_score * 0.1)
+    truck_limit = min(truck_limit, n_resource/2 + 1)
+
     if n_resource == 0 and train == stringToTag['Truck']:
         train = stringToTag['LightTank']
-    elif len(loc_of_truck) > 10:
-        train = 0
-    elif len(loc_of_truck) > n_resource/2 + 1 and train == stringToTag['Truck']:
+    elif len(loc_of_truck) > truck_limit and train == stringToTag['Truck']:
         train = 0
     if train != stringToTag['Truck'] and enemy_n_htank > n_drones:
         train = stringToTag['Drone']
@@ -382,7 +439,13 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
     """ Movement rules for agents
     """
     # movement = multi_forced_anchor(movement, raw_state, team)
-
+    bases = raw_state["bases"][team]
+    base_loc = np.argwhere(bases == 1).squeeze()
+    unit_loads = raw_state["loads"][team]
+    n_resources = get_n_resource(raw_state)
+    unit_recources = raw_state["resources"]
+    resource_locs = np.argwhere(unit_recources == 1)
+    unit_terrian = raw_state["terrain"]
     x_max, y_max = raw_state["resources"].shape
     types_of_units = getTypeOfUnits(locations, raw_state, team)
     enemy_type_of_units = getTypeOfUnits(enemies, raw_state, (team+1)%2)
@@ -417,6 +480,11 @@ def movement_rule(movement, raw_state, team, locations, enemies, enemy_order):
         unit_action_list[type_of_unit].append(movement[i])
         movement_unit = movement[i]
         if type_of_unit == stringToTag['Truck']:
+            if 4 not in enemy_type_of_units:
+                if unit_loads[x][y] > 2 or n_resources<unit_loads[x][y]:
+                    movement[i] = goto_base([x,y], base_loc, y_max, x_max, unit_terrian, movement[i])
+                elif unit_loads[x][y] == 0 and n_resources>0:
+                    movement[i] = goto_resource([x,y], y_max, x_max, unit_terrian, movement[i], resource_locs, enemies.tolist())
             movement[i] = collect_resource([x,y], raw_state, team, movement[i])
             enemy_loc = point_blank_shoot([x,y], enemies.tolist())
             if enemy_loc:

@@ -138,7 +138,7 @@ class OwnRiskyValley(BaseLearningAgentGym):
         # target = action[OwnRiskyValley.MAX_ACTION_UNIT: OwnRiskyValley.MAX_ACTION_UNIT*2]
         train = action[-1]
         
-        train = train_rule(train=train, raw_state=raw_state, th=1, team=team)
+        
         
         enemy_order = []
 
@@ -208,6 +208,7 @@ class OwnRiskyValley(BaseLearningAgentGym):
         locations, movement, enemy_order = movement_rule(movement, raw_state, team, locations, enemies, enemy_order)
 
         locations = list(map(tuple, locations))
+        train = train_rule(train=train, raw_state=raw_state, th=1, team=team)
         return [locations, movement, enemy_order, train]
 
     def step(self, action):
